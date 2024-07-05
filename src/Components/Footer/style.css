@@ -1,0 +1,105 @@
+.footer {
+    width: 100%;
+    height: 900px;
+    display: flex;
+    flex-direction: column;
+    background-color: #232323;
+    padding-left: 20px;
+    justify-content: space-evenly;
+}
+
+.footer-logo {
+    width: 150px;
+    height: 100px;
+}
+
+.endereco, .email {
+    font-size: 16px;
+    color: #fff;
+    width: 90%;
+    line-height: 25px;
+}
+
+.footer-sociais {
+    display: flex;
+    column-gap: 10px;
+}
+
+.footer-sociais img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.footer-menu {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    color: #fff;
+    height: auto;
+}
+
+.footer-menu ul {
+    list-style: none;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+.footer-centro {
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.footer-btn {
+    background-color: #1250A1;
+    color: #fff;
+    font-size: 18px;;
+    width: 250px;
+    height: 45px;
+    border: none;
+    cursor: pointer;
+}
+
+.footer-termos {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    color: #fff;
+    height: auto;
+}
+
+.footer-termos ul {
+    list-style: none;
+    line-height: 30px;
+    cursor: pointer;
+}
+
+
+@media screen and (min-width: 1024px) {
+    .footer {
+        height: 340px;
+        padding: 40px;
+        flex-direction: column;
+        padding-left: 0px;
+        flex-wrap: wrap;
+        align-content: space-around;
+        row-gap: 30px;
+    }
+    
+    
+    .endereco, .email {
+        width: 70%;
+    }
+    
+    .footer-sociais {
+        column-gap: 20px;
+    }
+    
+    .footer-btn {
+        width: 200px;
+        height: 55px;
+    }
+
+    
+}
