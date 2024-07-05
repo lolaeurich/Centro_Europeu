@@ -67,7 +67,7 @@
     .produtos-container {
         height: auto;
         padding: 5%;
-        margin-bottom: 7%;
+        margin-bottom: 0%;
     }
 
     .produtos-lista::marker {

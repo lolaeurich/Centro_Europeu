@@ -3,7 +3,6 @@
     height: auto;
     background-color: #000;
     padding: 6%;
-    margin-bottom: 7%;
 }
 
 .servicos-titulo {
@@ -26,7 +25,7 @@
 .slick-dots {
     align-items: center !important;
     margin-top: 5%;
-    margin-bottom: -5% !important;
+    margin-bottom: 4% !important;
     position: relative !important;
     display: flex !important;
     justify-content: center;
