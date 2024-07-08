@@ -10,6 +10,7 @@ import ServicesCarousel from "../../Components/Services/Services";
 import foneImage from '../../assets/Products/fone.jpg';
 import Confetti from "react-confetti";
 import { useWindowSize } from "@react-hook/window-size";
+import axios from 'axios';
 
 const products = [
   { id: 1, image: foneImage },
@@ -24,13 +25,40 @@ function Home() {
   const [showPopup, setShowPopup] = useState(false);
   const [showConfetti, setShowConfetti] = useState(false);
   const [showDiscountCode, setShowDiscountCode] = useState(false);
-  const [showPartnerPopup, setShowPartnerPopup] = useState(false); // Estado para controlar a nova popup de cadastro
+  const [showPartnerPopup, setShowPartnerPopup] = useState(false);
   const [cpf, setCpf] = useState('');
+  const [bannerUrl, setBannerUrl] = useState('');
   const { width, height } = useWindowSize();
+
+  useEffect(() => {
+    const fetchBannerImage = async () => {
+      try {
+        const response = await axios.get('https://centroeuropeuhomolog.belogic.com.br/api/banner');
+        const { banner } = response.data;
+
+        // Verifica se há banner na resposta
+        if (banner && banner.bannerUrl) {
+          setBannerUrl(banner.bannerUrl);
+        } else {
+          console.error('Erro: Nenhum banner encontrado na resposta da API');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar imagem do banner:', error.message);
+      }
+    };
+
+    fetchBannerImage();
+  }, []);
 
   const handleOpenPartnerPopup = (isOpen) => {
     setShowPartnerPopup(isOpen);
   };
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    setShowDiscountCode(false);
+  };
+
 
   useEffect(() => {
     // Verifica se a popup já foi fechada permanentemente
@@ -40,14 +68,10 @@ function Home() {
     if (!isPopupClosed) {
       setTimeout(() => {
         setShowPopup(true);
-      }, 5000); // Mostrar popup após 5 segundos
+      }, 10000); // Mostrar popup após 10 segundos
     }
   }, []);
 
-  const handleClosePopup = () => {
-    setShowPopup(false);
-    setShowDiscountCode(false); // Garantir que o código de desconto seja fechado junto com a popup inicial
-  };
 
   const handleEnviarFormulario = (event) => {
     event.preventDefault(); // Evita o comportamento padrão de submit do formulário
@@ -72,11 +96,13 @@ function Home() {
     setShowPopup(false);
     setShowDiscountCode(false); // Garantir que o código de desconto seja fechado junto com a popup inicial
   };
-
   return (
     <div>
       <Nav openPartnerPopup={handleOpenPartnerPopup} />
-      <div className="banner">
+      <div className="banner" style={{
+        backgroundImage: `url(${bannerUrl})`,
+       
+      }}>
         <h2 className="banner-h2">
           Clube de <span className="banner-span">Benefícios</span>
         </h2>
@@ -135,7 +161,6 @@ function Home() {
         <ServicesCarousel products={products} />
       </div>
 
-      {/* Renderização condicional da popup */}
       {showPopup && !showDiscountCode && (
         <div className="popup">
           <div className="popup-content">
@@ -161,12 +186,10 @@ function Home() {
               </button>
               {showConfetti && <Confetti width={"1000px"} height={height} colors={["blue", "yellow"]} recycle={false} />}
             </form>
-            {/* Conteúdo do cupom de desconto */}
           </div>
         </div>
       )}
 
-      {/* Renderização condicional do código de desconto */}
       {showDiscountCode && (
         <div className="popup">
           <div className="popup-content">
@@ -180,7 +203,6 @@ function Home() {
         </div>
       )}
 
-      {/* Renderização condicional da popup de parceiro */}
       {showPartnerPopup && (
         <div className="popup-parceiro">
           <div className="popup-content-parceiro">
@@ -210,6 +232,16 @@ function Home() {
                   type="text"
                   placeholder="Endereço"
                 />
+                 <input
+                  className="popup-input"
+                  type="text"
+                  placeholder="Nome do contato"
+                />
+                 <input
+                  className="popup-input"
+                  type="text"
+                  placeholder="Área de ocupação"
+                />
                 <button className="popup-enviar" type="submit">
                   Cadastrar
                 </button>
@@ -218,9 +250,6 @@ function Home() {
         </div>
       )}
 
-      {/* Renderização condicional do Confetti */}
-      {/* {showConfetti && <Confetti width={width} height={height} recycle={false} />} */}
-      
       <div className="divulgue">
         <div className="divulgue-text">
           <h2>Divulgue seus produtos e serviços em nosso marketplace</h2>
@@ -228,7 +257,7 @@ function Home() {
             Benefícios e ofertas exclusivas para alunos e ex-alunos de Centro
             Europeu.
           </p>
-          <button>Cadastre-se</button>
+          <button onClick={handleOpenPartnerPopup}>Cadastre-se</button>
         </div>
       </div>
 
