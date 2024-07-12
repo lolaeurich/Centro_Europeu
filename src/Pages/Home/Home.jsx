@@ -30,6 +30,44 @@ function Home() {
   const [bannerUrl, setBannerUrl] = useState('');
   const { width, height } = useWindowSize();
 
+  const [partnerData, setPartnerData] = useState({
+    nome: '',
+    email: '',
+    telefone: '',
+    endereco: '',
+    nomeContato: '',
+    areaOcupacao: ''
+  });
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+  
+    try {
+      const response = await axios.post(
+        'https://centroeuropeuhomolog.belogic.com.br/api/partner',
+        {
+          name: partnerData.nome,
+          email: partnerData.email,
+          phone: partnerData.telefone,
+          address: partnerData.endereco,
+          contact_name: partnerData.nomeContato,
+          occupation_area: partnerData.areaOcupacao
+        }
+      );
+  
+      console.log('Resposta da API:', response.data);
+  
+      // Aqui você pode adicionar lógica adicional após o sucesso, se necessário
+  
+      // Fechar o popup de indicação de parceiro
+      setShowPartnerPopup(false);
+    } catch (error) {
+      console.error('Erro ao cadastrar parceiro:', error.message);
+      // Tratar erros caso necessário
+    }
+  };
+  
+
   useEffect(() => {
     const fetchBannerImage = async () => {
       try {
@@ -70,6 +108,8 @@ function Home() {
         setShowPopup(true);
       }, 10000); // Mostrar popup após 10 segundos
     }
+    // Limpar localStorage ao montar o componente para garantir que o popup reapareça
+    localStorage.removeItem('popupClosed');
   }, []);
 
 
@@ -211,41 +251,55 @@ function Home() {
             </span>
             <h2 className="parceiro-h2">Indique um Parceiro</h2>
             <h4>Indique um parceiro para fazer parte da comunidade:</h4>
-            <form className="form-parceiro">
-                <input
-                  className="popup-input"
-                  type="text"
-                  placeholder="Nome da loja"
-                />
-                <input
-                  className="popup-input"
-                  type="email"
-                  placeholder="E-mail"
-                />
-                <input
-                  className="popup-input"
-                  type="text"
-                  placeholder="Telefone"
-                />
-                <input
-                  className="popup-input"
-                  type="text"
-                  placeholder="Endereço"
-                />
-                 <input
-                  className="popup-input"
-                  type="text"
-                  placeholder="Nome do contato"
-                />
-                 <input
-                  className="popup-input"
-                  type="text"
-                  placeholder="Área de ocupação"
-                />
-                <button className="popup-enviar" type="submit">
-                  Cadastrar
-                </button>
-              </form>
+            <form className="form-parceiro" onSubmit={handleSubmit}>
+  <input
+    className="popup-input"
+    type="text"
+    placeholder="Nome da loja"
+    value={partnerData.nome}
+    onChange={(e) => setPartnerData({ ...partnerData, nome: e.target.value })}
+  />
+  <input
+    className="popup-input"
+    type="email"
+    placeholder="E-mail"
+    value={partnerData.email}
+    onChange={(e) => setPartnerData({ ...partnerData, email: e.target.value })}
+  />
+  <input
+    className="popup-input"
+    type="text"
+    placeholder="Telefone"
+    value={partnerData.telefone}
+    onChange={(e) => setPartnerData({ ...partnerData, telefone: e.target.value })}
+  />
+  <input
+    className="popup-input"
+    type="text"
+    placeholder="Endereço"
+    value={partnerData.endereco}
+    onChange={(e) => setPartnerData({ ...partnerData, endereco: e.target.value })}
+  />
+  <input
+    className="popup-input"
+    type="text"
+    placeholder="Nome do contato"
+    value={partnerData.nomeContato}
+    onChange={(e) => setPartnerData({ ...partnerData, nomeContato: e.target.value })}
+  />
+  <input
+    className="popup-input"
+    type="text"
+    placeholder="Área de ocupação"
+    value={partnerData.areaOcupacao}
+    onChange={(e) => setPartnerData({ ...partnerData, areaOcupacao: e.target.value })}
+  />
+  <button className="popup-enviar" type="submit">
+    Cadastrar
+  </button>
+</form>
+
+
           </div>
         </div>
       )}

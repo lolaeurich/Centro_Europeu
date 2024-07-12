@@ -4,107 +4,145 @@
     background-color: #fff;
     padding: 6%;
     margin-bottom: 7%;
-}
-
-.produtos-lista::marker {
-    display: none;
-    color: transparent;
-}
-
-.produtos-titulo {
+  }
+  
+  .produtos-lista {
+    text-align: center;
+    padding: 0 10px; /* Espaço entre os slides (itens do carrossel) */
+  }
+  
+  .produtos-titulo {
     font-size: 28px;
     color: #1250A1;
     text-align: center;
     text-decoration: underline;
-}
-
-.produtos-slider {
+  }
+  
+  .produtos-slider {
     padding: 7%;
-}
-
-.produtos-imagens {
-    width: 95%;
-    height: 300px;
-    object-fit: contain;
-}
-
-.slick-dots {
+  }
+  
+  .produtos-imagens {
+    width: 100%;
+    height: 300px; /* Altura fixa das imagens */
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .slick-dots {
     align-items: center !important;
     margin-top: 5%;
     margin-bottom: -5% !important;
     position: relative !important;
     display: flex !important;
     justify-content: center;
-}
-.slick-dots li button {
-    font-size: 18px; 
-    color: transparent !important;; 
-}
-
-.slick-dots li.slick-active button {
+  }
+  
+  .slick-dots li button {
+    font-size: 18px;
+    color: transparent !important;
+  }
+  
+  .slick-dots li.slick-active button {
     border-radius: 50px;
     background-color: yellow;
-}
-
-.slick-dots li button:before {
-    color: #1250A1 !important;;
-}
-
-.slick-arrow {
+  }
+  
+  .slick-dots li button:before {
+    color: #1250A1 !important;
+  }
+  
+  .slick-arrow {
     display: none !important;
-}
-
-@media screen and (min-width: 768px) {
+  }
+  
+  .classe-btn-produtos {
+    margin-top: 7%;
+    display: flex;
+    justify-content: center;
+    padding-top: 5%;
+    padding-bottom: 0%;
+  }
+  
+  .produtos-btn {
+    width: 70%;
+    height: 40px;
+    background-color: yellow;
+    color: #1250A1;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  @media screen and (min-width: 768px) {
     .produtos-container {
-        width: 100%;
-        height: 550px;
-        background-color: #fff;
-        padding: 6%;
-    }
-}
-
-@media screen and (min-width: 1024px) {
-    .produtos-container {
-        height: auto;
-        padding: 5%;
-        margin-bottom: 0%;
+      width: 100%;
+      height: 550px;
+      background-color: #fff;
+      padding: 6%;
     }
 
-    .produtos-lista::marker {
-        display: none;
-        color: transparent;
-    }
-
-    .produtos-titulo {
-        font-size: 32px;
-        text-align: left;
-    }
-
-    .produtos-slider {
-        padding: 2% 0 0 0;
-    }
-}
-
-@media screen and (min-width: 1880px) {
-    .produtos-container {
-        margin-bottom: -4%;
-    }
-    .slick-list {
-        margin-bottom: 5% !important;
-    }
-    .produtos-titulo {
-        font-size: 38px;
-        color: #1250A1;
-        text-align: center;
-    }
-    
-    .produtos-slider {
-        padding: 7%;
-    }
-    
     .produtos-imagens {
-        width: 99%;
-        height: 300px;
-        object-fit: contain;
+        width: 100%;
+        height: 250px; /* Altura fixa das imagens */
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+  
+    .produtos-slider {
+      padding: 2% 0;
     }
-}
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .produtos-container {
+      height: 685px;
+      padding: 5%;
+      margin-bottom: 0%;
+    }
+  
+    .produtos-slider {
+      padding: 2% 0;
+    }
+  
+    .produtos-btn {
+      width: auto;
+      padding: 1%;
+    }
+  }
+  
+  @media screen and (min-width: 1880px) {
+    .produtos-container {
+      height: 924px;
+      margin-bottom: -4%;
+    }
+  
+    .produtos-titulo {
+      font-size: 38px;
+      color: #1250A1;
+      text-align: center;
+    }
+  
+    .produtos-slider {
+      padding: 4%;
+    }
+  
+    .produtos-imagens {
+      height: 300px;
+    }
+  
+    .classe-btn-produtos {
+      padding-top: 2%;
+      padding-bottom: 2%;
+    }
+  
+    .produtos-btn {
+      width: 20%;
+      padding-bottom: 2%;
+    }
+  }
+  

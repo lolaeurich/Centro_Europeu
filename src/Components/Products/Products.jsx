@@ -1,11 +1,34 @@
 import React from 'react';
-import "./style.css"
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import foneImage from '../../assets/Products/fone.jpg';
+import './style.css';
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
-const ProductCarousel = ({ products }) => {
+const ProductCarousel = () => {
+  const [products, setProducts] = React.useState([]);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get(
+        'https://centroeuropeuhomolog.belogic.com.br/api/product/list'
+      );
+      const productsData = response.data.products.data;
+
+      // Filtra apenas os produtos com detach = true
+      const detachedProducts = productsData.filter(product => product.detach);
+
+      setProducts(detachedProducts);
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProducts();
+  }, []);
+
   const settings = {
     dots: true,
     arrows: false,
@@ -22,7 +45,7 @@ const ProductCarousel = ({ products }) => {
           infinite: true,
           dots: true,
           arrows: false,
-        }
+        },
       },
       {
         breakpoint: 768,
@@ -31,30 +54,55 @@ const ProductCarousel = ({ products }) => {
           slidesToScroll: 1,
           initialSlide: 1,
           arrows: false,
-
-        }
-      }
+        },
+      },
     ],
-    // Adicione propriedades de estilo conforme necessário
     slideStyle: {
-      margin: '0 10px', // Espaçamento entre os slides
+      margin: '0 10px',
       textAlign: 'center',
-      height: "450px"
+      height: '450px',
+      columnGap: "5px"
     },
-    centerMode: false, // Modo de centralização desativado para evitar distorções
-    centerPadding: '0', // Padding central desativado para evitar distorções
+    centerMode: false,
+    centerPadding: '0',
+  };
+
+  const navigate = useNavigate();
+
+  const handleProd = () => {
+    navigate('/Produtos');
   };
 
   return (
     <div className='produtos-container'>
       <h2 className='produtos-titulo'>Produtos em Destaque</h2>
       <Slider {...settings} className='produtos-slider'>
-        {products.map((product) => (
-          <div className='produtos-lista' key={product.id}>
-            <img className='produtos-imagens' src={product.image} alt={product.name} />
-          </div>
-        ))}
+        {products &&
+          products.map((product) => (
+            <div className='produtos-lista' key={product.id}>
+              {product.photos && product.photos.length > 0 ? (
+                <a
+                  href={product.hotmart_url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  <img
+                    className='produtos-imagens'
+                    src={product.photos[0].public_path}
+                    alt={product.name}
+                  />
+                </a>
+              ) : (
+                <p>Imagem não disponível</p>
+              )}
+            </div>
+          ))}
       </Slider>
+      <div className='classe-btn-produtos'>
+        <button className='produtos-btn' onClick={handleProd}>
+          Ver todos os produtos
+        </button>
+      </div>
     </div>
   );
 };

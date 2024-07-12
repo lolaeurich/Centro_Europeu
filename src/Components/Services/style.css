@@ -1,108 +1,157 @@
-.servicos-container {
+.servicos-container3 {
     width: 100%;
     height: auto;
     background-color: #000;
     padding: 6%;
-}
-
-.servicos-titulo {
+  }
+  
+  .produtos-lista {
+    text-align: center;
+    padding: 0 10px; /* Espaço entre os slides (itens do carrossel) */
+  }
+  
+  .servicos-titulo {
     font-size: 28px;
-    color: yellow;
+    color: #1250A1;
     text-align: center;
     text-decoration: underline;
-}
-
-.servicos-slider {
+  }
+  
+  .servicos-slider {
     padding: 7%;
-}
-
-.servicos-imagens {
-    width: 95%;
-    height: 300px;
-    object-fit: contain;
-}
-
-.slick-dots {
+  }
+  
+  .produtos-imagens {
+    width: 100%;
+    height: 300px; /* Altura fixa das imagens */
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .slick-dots {
     align-items: center !important;
     margin-top: 5%;
-    margin-bottom: 4% !important;
+    margin-bottom: -5% !important;
     position: relative !important;
     display: flex !important;
     justify-content: center;
-}
-.slick-dots li button {
-    font-size: 18px; 
-    color: #fff; 
-}
-
-.slick-dots li.slick-active button {
+  }
+  
+  .slick-dots li button {
+    font-size: 18px;
+    color: transparent !important;
+  }
+  
+  .slick-dots li.slick-active button {
     border-radius: 50px;
     background-color: yellow;
-}
-
-.slick-arrow {
+  }
+  
+  .slick-dots li button:before {
+    color: #1250A1 !important;
+  }
+  
+  .slick-arrow {
     display: none !important;
-}
+  }
+  
+  .classe-btn-produtos {
+    display: flex;
+    justify-content: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+  }
+  
+  .servicos-btn {
+    width: 70%;
+    height: 40px;
+    background-color: yellow;
+    color: #1250A1;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .servicos-container3 {
+      width: 100%;
+      height: 550px;
+      padding: 6%;
+      background-color: #000;
+    }
 
-@media screen and (min-width: 768px) {
-    .servicos-container {
+    .produtos-imagens {
         width: 100%;
-        height: 550px;
-        background-color: #000;
-        padding: 6%;
+        height: 250px; /* Altura fixa das imagens */
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+  
+    .servicos-slider {
+      padding: 2% 0;
     }
-}
+  }
+  
+  @media screen and (min-width: 1024px) {
+    .servicos-container3 {
+      width: 100%;
+      height: 685px;
+      padding: 5%;
+      margin-bottom: 0%;
+    }
+  
+    .servicos-slider {
+      padding: 2% 0;
+    }
+  
+    .servicos-btn {
+      width: 240px;
+      padding: 1%;
+    }
 
-@media screen and (min-width: 1024px) {
-    .servicos-container {
-        height: 531px;
-        padding: 5%;
-        margin-bottom: 0%;
+    .classe-btn-produtos {
+      padding-bottom: 0%;
+      padding-top: 2%;
     }
 
     .servicos-titulo {
-        font-size: 32px;
-        text-align: left;
+      padding-bottom: 2%;
     }
-
-    .servicos-slider {
-        padding: 2% 0 0 0;
+    
+  }
+  
+  @media screen and (min-width: 1880px) {
+    .servicos-container3 {
+      height: 924px;
+      margin-bottom: -4%;
     }
-}
-
-@media screen and (min-width: 1300px) {
-    .servicos-container {
-        height: 600px;
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    .servicos-container {
-        height: 660px;
-    }
-}
-
-
-@media screen and (min-width: 1880px) {
-    .servicos-container {
-        margin-bottom: -4%;
-        height: auto;
-    }
-    .servicos-list {
-        margin-bottom: 5% !important;
-    }
+  
     .servicos-titulo {
-        font-size: 38px;
-        text-align: center;
+      font-size: 38px;
+      color: #1250A1;
+      text-align: center;
     }
-    
+  
     .servicos-slider {
-        padding: 7%;
+      padding: 4%;
     }
-    
-    .servicos-imagens {
-        width: 99%;
-        height: 300px;
-        object-fit: contain;
+  
+    .produtos-imagens {
+      height: 300px;
     }
-}
+  
+    .classe-btn-produtos {
+      padding-top: 2%;
+      padding-bottom: 2%;
+    }
+  
+    .servicos-btn {
+      width: 20%;
+      padding-bottom: 2%;
+    }
+  }
+  

@@ -1,13 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import logoHome from "../../assets/Home/logo-home.png";
-import face from "../../assets/Home/face.png";
-import insta from "../../assets/Home/instagram.png";
-import ytb from "../../assets/Home/ytb0.png";
+import faceIcon from "../../assets/Home/face.png";
+import instaIcon from "../../assets/Home/instagram.png";
+import ytbIcon from "../../assets/Home/ytb0.png";
 import partner from "../../assets/Home/partner.png";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
 
 function Nav ({ openPartnerPopup }) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('https://centroeuropeuhomolog.belogic.com.br/api/category/list');
+                
+                // Verifica se a resposta contém categorias
+                if (response.data && response.data.categories && Array.isArray(response.data.categories)) {
+                    // Filtra apenas as categorias com detach true
+                    const filteredCategories = response.data.categories.filter(category => category.detach === true);
+                    setCategories(filteredCategories);
+                } else {
+                    console.error('Erro: Response.data não contém categorias válidas.', response.data);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar categorias:', error.message);
+            }
+        };
+
+        fetchCategories();
+    }, []);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -21,9 +46,13 @@ function Nav ({ openPartnerPopup }) {
         openPartnerPopup(true);
     };
 
-    return(
+    const handleHome = () => {
+        navigate("/");
+    };
+
+    return (
         <div className="nav">
-            <img className="nav-logo" alt="" src={logoHome} />
+            <img className="nav-logo" alt="" src={logoHome} onClick={handleHome}/>
             <div className="nav-sanduiche" onClick={toggleDropdown}>
                 <div className="bar"></div>
                 <div className="bar"></div>
@@ -31,12 +60,9 @@ function Nav ({ openPartnerPopup }) {
             </div>  
             <div className="nav-menu-desktop">
                 <ul className="desktop-menu-list">
-                    <li>Gastronomia</li>
-                    <li>Idiomas</li>
-                    <li>Estilo</li>
-                    <li>Negócios</li>
-                    <li>Audiovisual</li>
-                    <li>Design</li>
+                    {categories.map(category => (
+                        <li key={category.id}>{category.name}</li>
+                    ))}
                 </ul>
             </div>   
             <button className="parceiro-btn" onClick={handleOpenPartnerPopup}>
@@ -46,17 +72,20 @@ function Nav ({ openPartnerPopup }) {
             <div className="dropdown">
                 <button className="close-button" onClick={closeDropdown}>X</button>
                 <ul className="dropdown-list">
-                    <li>Gastronomia</li>
-                    <li>Idiomas</li>
-                    <li>Estilo</li>
-                    <li>Negócios</li>
-                    <li>Audiovisual</li>
-                    <li>Design</li>
+                    {categories.map(category => (
+                        <li key={category.id}>{category.name}</li>
+                    ))}
                 </ul>
                 <div className="sociais">
-                    <img alt="" src={face}/>
-                    <img alt="" src={insta} />
-                    <img alt="" src={ytb} />
+                    <a href="https://www.facebook.com/centroeuropeu" target="_blank" rel="noopener noreferrer">
+                        <img alt="Facebook" src={faceIcon}/>
+                    </a>
+                    <a href="https://www.instagram.com/centroeuropeubr/" target="_blank" rel="noopener noreferrer">
+                        <img alt="Instagram" src={instaIcon} />
+                    </a>
+                    <a href="https://www.youtube.com/user/CentroEuropeuCtba" target="_blank" rel="noopener noreferrer">
+                        <img alt="YouTube" src={ytbIcon} />
+                    </a>
                 </div>
             </div>
             )}  
