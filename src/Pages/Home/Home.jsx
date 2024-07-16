@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.css";
 import Nav from "../../Components/Nav/Nav";
 import star from "../../assets/Home/star.png";
@@ -76,22 +76,27 @@ function Home() {
       // Tratar erros caso necessário
     }
   };
+  
 
-  const fetchBannerImage = async () => {
-    try {
-      const response = await axios.get('https://centroeuropeuhomolog.belogic.com.br/api/banner');
-      const { banner } = response.data;
+  useEffect(() => {
+    const fetchBannerImage = async () => {
+      try {
+        const response = await axios.get('https://centroeuropeuhomolog.belogic.com.br/api/banner');
+        const { banner } = response.data;
 
-      // Verifica se há banner na resposta
-      if (banner && banner.bannerUrl) {
-        setBannerUrl(banner.bannerUrl);
-      } else {
-        console.error('Erro: Nenhum banner encontrado na resposta da API');
+        // Verifica se há banner na resposta
+        if (banner && banner.bannerUrl) {
+          setBannerUrl(banner.bannerUrl);
+        } else {
+          console.error('Erro: Nenhum banner encontrado na resposta da API');
+        }
+      } catch (error) {
+        console.error('Erro ao buscar imagem do banner:', error.message);
       }
-    } catch (error) {
-      console.error('Erro ao buscar imagem do banner:', error.message);
-    }
-  };
+    };
+
+    fetchBannerImage();
+  }, []);
 
   const handleOpenPartnerPopup = (isOpen) => {
     setShowPartnerPopup(isOpen);
@@ -101,6 +106,7 @@ function Home() {
     setShowPopup(false);
     setShowDiscountCode(false);
   };
+
 
   const handleEnviarFormulario = (event) => {
     event.preventDefault(); // Evita o comportamento padrão de submit do formulário
@@ -190,8 +196,8 @@ function Home() {
       </div>
 
       <div className="product-carousel-section">
-        <ProductCarousel products={products} onFirstProductClick={handleFirstProductClick} />
-        <ServicesCarousel products={products} onFirstProductClick={handleFirstProductClick} />
+        <ProductCarousel products={products} onFirstProductClick={handleFirstProductClick}/>
+        <ServicesCarousel products={products} onFirstProductClick={handleFirstProductClick}/>
       </div>
 
       {showPopup && !showDiscountCode && (
