@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./style.css";
 import Nav from "../../Components/Nav/Nav";
 import star from "../../assets/Home/star.png";
@@ -8,6 +8,7 @@ import Footer from "../../Components/Footer/Footer";
 import ProductCarousel from "../../Components/Products/Products";
 import ServicesCarousel from "../../Components/Services/Services";
 import foneImage from '../../assets/Products/fone.jpg';
+import copy from "../../assets/Home/copy.png";
 import Confetti from "react-confetti";
 import { useWindowSize } from "@react-hook/window-size";
 import axios from 'axios';
@@ -29,6 +30,8 @@ function Home() {
   const [cpf, setCpf] = useState('');
   const [bannerUrl, setBannerUrl] = useState('');
   const { width, height } = useWindowSize();
+  const [discountCode, setDiscountCode] = useState('');
+  const [hasShownPopup, setHasShownPopup] = useState(false);
 
   const [partnerData, setPartnerData] = useState({
     nome: '',
@@ -38,6 +41,13 @@ function Home() {
     nomeContato: '',
     areaOcupacao: ''
   });
+
+  const handleFirstProductClick = () => {
+    if (!showPopup && !hasShownPopup) {
+      setShowPopup(true);
+      setHasShownPopup(true);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -66,27 +76,22 @@ function Home() {
       // Tratar erros caso necessário
     }
   };
-  
 
-  useEffect(() => {
-    const fetchBannerImage = async () => {
-      try {
-        const response = await axios.get('https://centroeuropeuhomolog.belogic.com.br/api/banner');
-        const { banner } = response.data;
+  const fetchBannerImage = async () => {
+    try {
+      const response = await axios.get('https://centroeuropeuhomolog.belogic.com.br/api/banner');
+      const { banner } = response.data;
 
-        // Verifica se há banner na resposta
-        if (banner && banner.bannerUrl) {
-          setBannerUrl(banner.bannerUrl);
-        } else {
-          console.error('Erro: Nenhum banner encontrado na resposta da API');
-        }
-      } catch (error) {
-        console.error('Erro ao buscar imagem do banner:', error.message);
+      // Verifica se há banner na resposta
+      if (banner && banner.bannerUrl) {
+        setBannerUrl(banner.bannerUrl);
+      } else {
+        console.error('Erro: Nenhum banner encontrado na resposta da API');
       }
-    };
-
-    fetchBannerImage();
-  }, []);
+    } catch (error) {
+      console.error('Erro ao buscar imagem do banner:', error.message);
+    }
+  };
 
   const handleOpenPartnerPopup = (isOpen) => {
     setShowPartnerPopup(isOpen);
@@ -96,22 +101,6 @@ function Home() {
     setShowPopup(false);
     setShowDiscountCode(false);
   };
-
-
-  useEffect(() => {
-    // Verifica se a popup já foi fechada permanentemente
-    const isPopupClosed = localStorage.getItem('popupClosed');
-    
-    // Mostra a popup apenas se não estiver fechada permanentemente
-    if (!isPopupClosed) {
-      setTimeout(() => {
-        setShowPopup(true);
-      }, 10000); // Mostrar popup após 10 segundos
-    }
-    // Limpar localStorage ao montar o componente para garantir que o popup reapareça
-    localStorage.removeItem('popupClosed');
-  }, []);
-
 
   const handleEnviarFormulario = (event) => {
     event.preventDefault(); // Evita o comportamento padrão de submit do formulário
@@ -128,6 +117,7 @@ function Home() {
       setShowPopup(false);
       setShowConfetti(false); // Esconde o Confetti depois de fechar a popup
       setShowDiscountCode(true); // Mostra o código de desconto
+      setDiscountCode('DESCONTO123'); // Define o código de desconto
     }, 3000); // Fecha a popup após 3 segundos
   };
 
@@ -136,13 +126,16 @@ function Home() {
     setShowPopup(false);
     setShowDiscountCode(false); // Garantir que o código de desconto seja fechado junto com a popup inicial
   };
+
+  const handleCopyDiscountCode = () => {
+    navigator.clipboard.writeText(discountCode); // Copia o código de desconto para a área de transferência
+    alert('Código de desconto copiado!');
+  };
+
   return (
     <div>
       <Nav openPartnerPopup={handleOpenPartnerPopup} />
-      <div className="banner" style={{
-        backgroundImage: `url(${bannerUrl})`,
-       
-      }}>
+      <div className="banner" style={{ backgroundImage: `url(${bannerUrl})` }}>
         <h2 className="banner-h2">
           Clube de <span className="banner-span">Benefícios</span>
         </h2>
@@ -197,8 +190,8 @@ function Home() {
       </div>
 
       <div className="product-carousel-section">
-        <ProductCarousel products={products} />
-        <ServicesCarousel products={products} />
+        <ProductCarousel products={products} onFirstProductClick={handleFirstProductClick} />
+        <ServicesCarousel products={products} onFirstProductClick={handleFirstProductClick} />
       </div>
 
       {showPopup && !showDiscountCode && (
@@ -237,7 +230,12 @@ function Home() {
               ×
             </span>
             <h2>Código de Desconto</h2>
-            <p>Seu código de desconto é: <strong>DESCONTO123</strong></p>
+            <p>
+              Seu código de desconto é: <strong>{discountCode}</strong>
+              <button className="copy-btn" onClick={handleCopyDiscountCode}>
+                <img alt="" src={copy}/>
+              </button>
+            </p>
             <p>Utilize este código em suas compras!</p>
           </div>
         </div>
@@ -252,54 +250,52 @@ function Home() {
             <h2 className="parceiro-h2">Indique um Parceiro</h2>
             <h4>Indique um parceiro para fazer parte da comunidade:</h4>
             <form className="form-parceiro" onSubmit={handleSubmit}>
-  <input
-    className="popup-input"
-    type="text"
-    placeholder="Nome da loja"
-    value={partnerData.nome}
-    onChange={(e) => setPartnerData({ ...partnerData, nome: e.target.value })}
-  />
-  <input
-    className="popup-input"
-    type="email"
-    placeholder="E-mail"
-    value={partnerData.email}
-    onChange={(e) => setPartnerData({ ...partnerData, email: e.target.value })}
-  />
-  <input
-    className="popup-input"
-    type="text"
-    placeholder="Telefone"
-    value={partnerData.telefone}
-    onChange={(e) => setPartnerData({ ...partnerData, telefone: e.target.value })}
-  />
-  <input
-    className="popup-input"
-    type="text"
-    placeholder="Endereço"
-    value={partnerData.endereco}
-    onChange={(e) => setPartnerData({ ...partnerData, endereco: e.target.value })}
-  />
-  <input
-    className="popup-input"
-    type="text"
-    placeholder="Nome do contato"
-    value={partnerData.nomeContato}
-    onChange={(e) => setPartnerData({ ...partnerData, nomeContato: e.target.value })}
-  />
-  <input
-    className="popup-input"
-    type="text"
-    placeholder="Área de ocupação"
-    value={partnerData.areaOcupacao}
-    onChange={(e) => setPartnerData({ ...partnerData, areaOcupacao: e.target.value })}
-  />
-  <button className="popup-enviar" type="submit">
-    Cadastrar
-  </button>
-</form>
-
-
+              <input
+                className="popup-input"
+                type="text"
+                placeholder="Nome da loja"
+                value={partnerData.nome}
+                onChange={(e) => setPartnerData({ ...partnerData, nome: e.target.value })}
+              />
+              <input
+                className="popup-input"
+                type="email"
+                placeholder="E-mail"
+                value={partnerData.email}
+                onChange={(e) => setPartnerData({ ...partnerData, email: e.target.value })}
+              />
+              <input
+                className="popup-input"
+                type="text"
+                placeholder="Telefone"
+                value={partnerData.telefone}
+                onChange={(e) => setPartnerData({ ...partnerData, telefone: e.target.value })}
+              />
+              <input
+                className="popup-input"
+                type="text"
+                placeholder="Endereço"
+                value={partnerData.endereco}
+                onChange={(e) => setPartnerData({ ...partnerData, endereco: e.target.value })}
+              />
+              <input
+                className="popup-input"
+                type="text"
+                placeholder="Nome do contato"
+                value={partnerData.nomeContato}
+                onChange={(e) => setPartnerData({ ...partnerData, nomeContato: e.target.value })}
+              />
+              <input
+                className="popup-input"
+                type="text"
+                placeholder="Área de ocupação"
+                value={partnerData.areaOcupacao}
+                onChange={(e) => setPartnerData({ ...partnerData, areaOcupacao: e.target.value })}
+              />
+              <button className="popup-enviar" type="submit">
+                Cadastrar
+              </button>
+            </form>
           </div>
         </div>
       )}

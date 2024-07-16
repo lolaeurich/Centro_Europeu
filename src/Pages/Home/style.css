@@ -275,6 +275,21 @@ html, body {
     cursor: pointer;
 }
 
+.copy-btn {
+    margin-left: 5px;
+    margin-top: 2px;
+    padding-top: 1%;
+    height: 35px;
+    width: 35px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.copy-btn:hover {
+    background-color: yellow;
+}
+
 .popup-form {
     display: flex;
     flex-direction: column;

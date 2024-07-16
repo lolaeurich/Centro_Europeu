@@ -6,8 +6,9 @@ import './style.css';
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const ProductCarousel = () => {
+const ProductCarousel = ({ onFirstProductClick }) => {
   const [products, setProducts] = React.useState([]);
+  const [hasShownPopup, setHasShownPopup] = React.useState(false);
 
   const fetchProducts = async () => {
     try {
@@ -73,6 +74,13 @@ const ProductCarousel = () => {
     navigate('/Produtos');
   };
 
+  const handleClickProduct = () => {
+    if (!hasShownPopup) {
+      onFirstProductClick();
+      setHasShownPopup(true);
+    }
+  };
+
   return (
     <div className='produtos-container'>
       <h2 className='produtos-titulo'>Produtos em Destaque</h2>
@@ -85,6 +93,7 @@ const ProductCarousel = () => {
                   href={product.hotmart_url}
                   target='_blank'
                   rel='noopener noreferrer'
+                  onClick={handleClickProduct} // Adiciona o onClick para cada produto
                 >
                   <img
                     className='produtos-imagens'

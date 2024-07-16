@@ -6,8 +6,9 @@ import './style.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const ServicesCarousel = () => {
+const ServicesCarousel = ({ onFirstServiceClick }) => {
   const [services, setServices] = useState([]);
+  const [hasShownPopup, setHasShownPopup] = useState(false);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -73,11 +74,18 @@ const ServicesCarousel = () => {
     navigate('/Servicos');
   };
 
+  const handleFirstServiceClick = () => {
+    if (!hasShownPopup) {
+      onFirstServiceClick();
+      setHasShownPopup(true);
+    }
+  };
+
   return (
     <div className='servicos-container3'>
       <h2 className='servicos-titulo'>Serviços em Destaque</h2>
       <Slider {...settings} className='servicos-slider'>
-      {services &&
+        {services &&
           services.map((service) => (
             <div className='produtos-lista' key={service.id}>
               {service.photos && service.photos.length > 0 ? (
@@ -85,6 +93,7 @@ const ServicesCarousel = () => {
                   href={service.hotmart_url}
                   target='_blank'
                   rel='noopener noreferrer'
+                  onClick={handleFirstServiceClick} // Adiciona o onClick para cada serviço
                 >
                   <img
                     className='produtos-imagens'
